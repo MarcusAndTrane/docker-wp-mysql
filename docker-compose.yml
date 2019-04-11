@@ -2,8 +2,8 @@ version: "3.3"
 
 services:
   db:
-    image: mysql:latest
-    restart: always
+    image: mysql:5.7
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: "${WP_MYSQL_ROOT_PASSWORD}"
       MYSQL_DATABASE: "${WP_MYSQL_DATABASE}"
@@ -14,14 +14,24 @@ services:
 
   app:
     image: wordpress:latest
-    restart: always
+    restart: unless-stopped
+    hostname: "${WP_PUBLIC_HOST}"
     environment:
+      VIRTUAL_HOST: "${WP_PUBLIC_HOST}"
+      VIRTUAL_PORT: 80
+      # LETSENCRYPT_HOST: "${WP_PUBLIC_HOST}"
+      # LETSENCRYPT_EMAIL: "sovanna.hing@gmail.com"
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: "${WP_MYSQL_USER}"
       WORDPRESS_DB_PASSWORD: "${WP_MYSQL_PASSWORD}"
-    ports:
-      - "${WP_PORT}:80"
+      WORDPRESS_DB_NAME: "${WP_MYSQL_DATABASE}"
     depends_on:
       - db
     volumes:
       - ./src:/var/www/html
+
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
