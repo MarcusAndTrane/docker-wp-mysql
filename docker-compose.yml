@@ -15,12 +15,11 @@ services:
   app:
     image: wordpress:latest
     restart: unless-stopped
-    hostname: "${WP_PUBLIC_HOST}"
     environment:
       VIRTUAL_HOST: "${WP_PUBLIC_HOST}"
       VIRTUAL_PORT: 80
-      # LETSENCRYPT_HOST: "${WP_PUBLIC_HOST}"
-      # LETSENCRYPT_EMAIL: "sovanna.hing@gmail.com"
+      LETSENCRYPT_HOST: "${WP_PUBLIC_HOST}"
+      LETSENCRYPT_EMAIL: "sovanna.hing@gmail.com"
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: "${WP_MYSQL_USER}"
       WORDPRESS_DB_PASSWORD: "${WP_MYSQL_PASSWORD}"
