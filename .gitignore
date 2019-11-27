@@ -31,3 +31,9 @@ wp-config.php
 sftp-config.json
 .env
 docker-compose.yml
+var/
+
+*.old
+*.tar.gz
+*.well-known
+*._wp-includes
